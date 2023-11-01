@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <link rel="stylesheet" href="/news.css">
+</head>
+<body>
+<script defer src="/news.js"></script>
+<section class="container">
+    <header class="header_container">
+        <h1 onclick="goHome()">뉴스 게시판</h1>
+        <form class="header_search_form" method="get" action="/news/search">
+            <input placeholder="내용 검색" name="content"/>
+            <button>🔎</button>
+        </form>
+    </header>
+    <main class="main_container">
+        <th:block th:if="${ list }">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="vo : ${list}">
+                    <td>[[${ vo.id }]]</td>
+                    <td th:onclick="|goDetail(${vo.id})|" style="cursor: pointer"> [[${ vo.title }]]</td>
+                    <td>[[${ vo.writer }]]</td>
+                    <td th:text="${#temporals.format(vo.writeDate, 'yyyy-MM-dd')}"></td>
+                    <td th:id="|${vo.id}|">[[${ vo.cnt }]]</td>
+                </tr>
+                </tbody>
+            </table>
+        </th:block>
+        <button onclick="displayPostPage()">뉴스 작성</button>
+        <form class="post_form_container display_none" method="post" action="/news/insert">
+            <h2>뉴스 내용</h2>
+            <input class="post_form_container_inputData" placeholder="작성자" name="writer"/>
+            <input class="post_form_container_inputData" placeholder="제목" name="title"/>
+            <textarea class="post_form_container_inputData" placeholder="글 내용" name="content"></textarea>
+            <div class="btn_container">
+                <input class="input_btn" type="submit" value="등록"/>
+                <input class="input_btn" type="button" value="재작성" onclick="clearData()"/>
+                <input class="input_btn" type="button" value="취소" onclick="cancelDetail()"/>
+            </div>
+        </form>
+    </main>
+</section>
+</body>
+</html>

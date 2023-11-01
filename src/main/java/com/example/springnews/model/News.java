@@ -19,8 +19,17 @@ public class News {
     private String writer;
     private String title;
     private String content;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @Column(name="writedate")
-    private LocalDateTime writedate;
+    @Column(name="writeDate")
+    private LocalDateTime writeDate;
+
     private int cnt;
+
+    @PrePersist
+    public void prePersist() {
+        if (writeDate == null) {
+            writeDate = LocalDateTime.now();
+        }
+    }
 }

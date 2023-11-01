@@ -26,18 +26,18 @@ public class NewController {
         } else {
             mav.addObject("msg", "추출된 결과가 없어요");
         }
-        mav.setViewName("newsView");
+        mav.setViewName("newsView.html");
         return mav;
     }
 
-    @GetMapping(value ="/news/one", produces = "application/json; charset=utf-8")
+    @GetMapping(value = "/news/one", produces = "application/json; charset=utf-8")
     @ResponseBody
     @Transactional
     public News one(int id) {
         try {
             News oldvo = newsRepository.findById(id).get();
-            oldvo.setCnt(oldvo.getCnt());
-        } catch(Exception e) {
+            oldvo.setCnt(oldvo.getCnt() + 1);
+        } catch (Exception e) {
             System.out.println("오류발생");
         }
         return newsRepository.findById(id).get();
@@ -50,10 +50,10 @@ public class NewController {
         try {
             newsRepository.deleteById(id);
             mav.addObject("list", newsRepository.findAll());
-        } catch(Exception e) {
+        } catch (Exception e) {
             mav.addObject("msg", "삭제를 처리하는 동안 오류 발생");
         }
-        mav.setViewName("newsView");
+        mav.setViewName("newsView.html");
         return mav;
     }
 
@@ -67,7 +67,7 @@ public class NewController {
         } else {
             mav.addObject("msg", "추출된 결과가 없어요");
         }
-        mav.setViewName("newsView");
+        mav.setViewName("newsView.html");
         return mav;
     }
 
@@ -80,7 +80,7 @@ public class NewController {
         } else {
             mav.addObject("msg", "추출된 결과가 없어요");
         }
-        mav.setViewName("newsView");
+        mav.setViewName("newsView.html");
         return mav;
     }
 
@@ -92,10 +92,10 @@ public class NewController {
         try {
             newsRepository.save(vo);
             mav.addObject("list", newsRepository.findAll());
-        } catch(Exception e) {
+        } catch (Exception e) {
             mav.addObject("msg", "글 작성을 처리하는 동안 오류 발생");
         }
-        mav.setViewName("newsView");
+        mav.setViewName("newsView.html");
         return mav;
     }
 
@@ -104,15 +104,16 @@ public class NewController {
     public ModelAndView update(News vo) {
         ModelAndView mav = new ModelAndView();
         try {
+            System.out.println(vo.toString());
             News oldvo = newsRepository.findById(vo.getId()).get();
             oldvo.setWriter(vo.getWriter());
             oldvo.setTitle(vo.getTitle());
             oldvo.setContent(vo.getContent());
             mav.addObject("list", newsRepository.findAll());
-        } catch(Exception e) {
+        } catch (Exception e) {
             mav.addObject("msg", "글 작성을 수정하는 동안 오류 발생");
         }
-        mav.setViewName("newsView");
+        mav.setViewName("newsView.html");
         return mav;
     }
 }
